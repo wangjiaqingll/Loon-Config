@@ -1,0 +1,16 @@
+#!name = 上汽大众超级App自动签到
+#!desc = 打开App签到页自动捕获凭据，每天08:30定时签到并推送结果通知。需开启MITM并信任Loon证书
+#!author = wangjiaqingll
+#!homepage = https://github.com/wangjiaqingll/Loon-Config
+#!icon = https://raw.githubusercontent.com/Orz-3/mini/master/Color/Global.png
+#!tags = 签到,汽车
+
+[Script]
+# 凭据捕获：打开 App 签到页时自动触发（配合 MITM 生效）
+http-request ^https?:\/\/mweb\.mos\.csvw\.com\/mos\/operation\/home\/api\/v1\/user\/sign script-path=https://raw.githubusercontent.com/wangjiaqingll/Loon-Config/main/svw-capture.js, requires-body=false, tag=SVW签到-获取凭据, enable=true
+
+# 每日自动签到（08:30），可在 Loon 插件详情中修改 cron 时间
+cron "30 8 * * *" script-path=https://raw.githubusercontent.com/wangjiaqingll/Loon-Config/main/svw-checkin.js, tag=SVW每日签到, enable=true
+
+[MITM]
+hostname = mweb.mos.csvw.com
